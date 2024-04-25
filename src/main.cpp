@@ -29,39 +29,23 @@
 //------------------------------ 
 
 #include <iostream>
-#include <memory>
-#include "ContainerManager.h"
+// #include <memory>
+
+#include "TerminalHandler.h"
+#include "ContainerManager.h" // could be moved to only TerminalHandler
 
 //------------------------------ 
 
 int main() 
 {
-    std::unique_ptr<InputControl> pInput = std::make_unique<InputControl>();
+    // std::unique_ptr<ContainerManager> pContainerManager = std::make_unique<ContainerManager>();
+    ContainerManager containerManager;
+    TerminalHandler terminal;
 
-    // Сначала спрашиваем надо ли вводить свои M и N
-    pInput.get().init();
-
-    // Если надо, то позволяем их ввести
-
-    // Инициируем наполнение контейнеров строками (Представим, что потом можно заменить/добавить функционал с stdin)
-    std::unique_ptr<ContainerManager> pContainerManager = std::make_unique<ContainerManager>();
-
-    pContainerManager.get().fillContainers();
-
-    // Пробуем посмотреть на разбиение строк и контейнеров
-    pContainerManager.get().showContents();
-
-    // Пробуем посмотреть ID контейнера по запрашиваемой на поиск строке 
-    pContainerManager.get().findString("sth");
-
-    // std::printf("Input contatiner number (M) and string number (N)\n"
-    //             "current values:\n"
-    //             "M = %d \n"
-    //             "N = %d \n", M, N);
-
-    // std::cout >> ""
-    // std::cin << M; 
-
+    /** 
+     * @todo так делать неэтично, но я кое-что попробую потом
+    */
+    terminal.initContainerManager(&containerManager); 
 
     return 0;
 }

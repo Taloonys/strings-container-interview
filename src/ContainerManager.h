@@ -27,9 +27,16 @@ typedef unsigned int ContainerId;
 class ContainerManager final
 {
 public:
-    explicit ContainerManager(uint M, uint N);
+    /** 
+     * @brief setM - устанавливает количество контейнеров M
+    */
+    void setM(const uint m);
 
-public:
+    /** 
+     * @brief setN - устанавливает количество строк N
+    */
+    void setN(const uint n);
+
     /**
      * @brief getM - узнать кол-во контейнеров
     */
@@ -53,7 +60,7 @@ public:
     /** 
      * @brief findString - поиск строки по контейнерам 
     */
-    bool findString(const std::string& str) const;
+    ContainerId findString(const std::string& str) const; /// @todo try string_view
 
 
 

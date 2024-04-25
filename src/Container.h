@@ -14,14 +14,12 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <iostream>
 
 //------------------------------ 
 
 class Container final
 {
-public:
-    explicit Container();
-
 public:
     /**
      * @brief findString - поиск строки
@@ -31,20 +29,20 @@ public:
     /**
      * @brief insert - вставка одной строки (copy)
     */
-    void insert(std::string str_view);
+    void insert(const std::string str_view);
 
     /** 
      * @brief insert - вставка нескольких строк (copy)
     */
-    void insert(std::vector<std::string> str_view_vector);
+    void insert(const std::vector<std::string>& str_vector);
 
     /**
      * @brief showContents - выводит в stdout все свои строки
     */
-    void showContents();
+    void showContents() const;
 
 
 
 private:
-    std::unordered_set<std::string> m_stringSet; // исходя из того, что строки уникальные
+    std::unordered_set<std::string> m_stringSet; // исходя из того, что строки уникальные + cамый быстрый поиск дефолтный поиск среди других структур
 };
