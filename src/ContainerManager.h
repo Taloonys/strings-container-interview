@@ -65,9 +65,13 @@ public:
 
 
 private:
-    uint m_M;
-    uint m_N;
+    uint m_M = 4;
+    uint m_N = 12;
 
     std::unordered_map<ContainerId, Container> m_containers;
 
+    uint counter = 0;
+
+private:
+    void m_createContainers();
 };

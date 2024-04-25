@@ -43,7 +43,7 @@ int main()
     TerminalHandler terminal;
 
     /** 
-     * @todo так делать неэтично, но я кое-что попробую потом
+     * @todo так делать неэтично, но я кое-что хочу попробовать потом
     */
     terminal.initContainerManager(&containerManager); 
 

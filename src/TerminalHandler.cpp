@@ -7,6 +7,9 @@ bool TerminalHandler::initContainerManager(ContainerManager* containerManager)
 {
     m_containerManager = containerManager;   
 
+    if(m_containerManager == nullptr) // пока не уверен, кому можно владеть или кто будет создавать
+        return false; 
+
     m_initContainerMessage();
 
     return true;
@@ -106,11 +109,10 @@ void TerminalHandler::m_executeCommmands()
 
         if(m_input == "find string")
         {
-            std::cout << "Input string you want to find";
+            std::cout << "Input the string you want to find:\n";
             std::getline(std::cin, m_input);
 
-            m_containerManager->findString(m_input);
-            /// @todo later 
+            std::cout << "This string is in container: " << m_containerManager->findString(m_input) << std::endl;
         }
 
         if(m_input == "show contents")

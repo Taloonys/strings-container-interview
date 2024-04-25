@@ -22,13 +22,13 @@ public:
     /**
      * @brief initContainerManager - инициирует работу через терминал с контейнерами
     */
-    bool initContainerManager(ContainerManager* containerManager);
+    bool initContainerManager(ContainerManager* containerManager = nullptr);
 
 
 
 private:
-    std::string m_input;
-    ContainerManager* m_containerManager;
+    std::string         m_input = "";
+    ContainerManager*   m_containerManager = nullptr;
 
 private:
     void m_initContainerMessage();

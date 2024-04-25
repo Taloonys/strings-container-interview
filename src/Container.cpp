@@ -7,7 +7,7 @@
 */
 bool Container::findString(const std::string& str) const 
 {
-    if(m_stringSet.find(str) == m_stringSet.end())
+    if(m_stringSet.find(str) != m_stringSet.end())
         return true;
 
     return false;
@@ -48,6 +48,6 @@ void Container::showContents() const
 
     for(const std::string& str : m_stringSet)
     {
-        std::cout << std << std::endl;
+        std::cout << str << std::endl;
     }
 }

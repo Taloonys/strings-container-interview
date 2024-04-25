@@ -30,9 +30,19 @@ uint ContainerManager::getN() const
 
 //---------------------------------------------------------------------- 
 
-void ContainerManager::fillContainers()
+void ContainerManager::fillContainers() // этап 1
 {
-    /// @todo
+    m_createContainers();
+    
+    uint strsPerContainer = (m_N / m_M);
+    for(auto& [id, container] : m_containers)
+    {
+        for(int i = 0; i < strsPerContainer; i++) // надеюсь, что в текущем случае не волнует О(n^2)
+        {
+            container.insert(("string" + std::to_string(i)) + "__" + std::to_string(counter++));    
+        }
+    }
+
 }
 
 //---------------------------------------------------------------------- 
@@ -41,8 +51,9 @@ void ContainerManager::showContents() const
 {
     for(const auto & [contId, container] : m_containers)
     {
+        std::printf("----- Container № %d -----\n", contId);
         container.showContents();
-        /// @todo обработать формат вывода
+        std::cout <<"--------------------------\n";
     }
 }
 
@@ -61,4 +72,15 @@ ContainerId ContainerManager::findString(const std::string& str) const /// @todo
     }
 
     return 0; /// @details at method's signature
+}
+
+//---------------------------------------------------------------------- 
+
+void ContainerManager::m_createContainers()
+{
+    for(ContainerId id = 0; id < m_M; id++)
+    {
+        Container container;
+        m_containers.insert({id, container});
+    }
 }
