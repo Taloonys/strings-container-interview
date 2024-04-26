@@ -14,7 +14,7 @@
 #pragma once
 
 #include <unordered_map>
-
+#include <optional>
 #include "Container.h"
 
 //------------------------------ 
@@ -60,7 +60,7 @@ public:
     /** 
      * @brief findString - поиск строки по контейнерам 
     */
-    ContainerId findString(const std::string& str) const; /// @todo try string_view
+    std::optional<ContainerId> findString(const std::string& str) const; /// @todo try string_view
 
 
 

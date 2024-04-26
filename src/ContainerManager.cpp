@@ -59,19 +59,24 @@ void ContainerManager::showContents() const
 
 //---------------------------------------------------------------------- 
 
-ContainerId ContainerManager::findString(const std::string& str) const /// @todo возвращать std::optional
+std::optional<ContainerId> ContainerManager::findString(const std::string& str) const /// @todo возвращать std::optional
 {
     /**
      * @bug что-то я не подумал, что мы исключаем дубликаты лишь внутри контейнера, но не глобально,
      * хотя по заданию строки уникальны глобально... допустим, что по заданию это не надо учитывать
     */
+    std::optional<ContainerId> id;
+
     for(const auto & [contId, container] : m_containers)
     {
         if(container.findString(str))
-            return contId;
+        {
+            id = contId;
+            break;
+        }
     }
 
-    return 0; /// @details at method's signature
+    return id; /// @details at method's signature
 }
 
 //---------------------------------------------------------------------- 
