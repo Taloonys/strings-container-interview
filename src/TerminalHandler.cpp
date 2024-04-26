@@ -2,13 +2,14 @@
 #include <optional>
 #include "TerminalHandler.h"
 
-#define DEBUG(x) { std::cout << "[DEBUG] : " << x << std::endl; }
 
 //------------------------------ 
 
 bool TerminalHandler::initContainerManager(ContainerManager* containerManager)
 {
     m_containerManager = containerManager;   
+
+    srand(time(NULL));
 
     if(m_containerManager == nullptr) // пока не уверен, кому можно владеть или кто будет создавать
         return false; 
@@ -141,12 +142,25 @@ void TerminalHandler::m_findString()
 
 void TerminalHandler::m_initCmdsMessageMenu()
 {
-
     std::cout << std::endl 
               << "[Available commands]" << std::endl;
 
     for(const auto& cmd : m_cmdOptions)
         std::cout << cmd.id << " - " << cmd.text << std::endl;
+}
+
+//------------------------------------------------------------------------------- 
+
+void TerminalHandler::m_randContainersContent()
+{
+    std::cout << "Current max length for random string is: " << m_containerManager->getStrLenRand() << std::endl
+              <<  "input correct value (>0) if you want to change it: " << std::endl;
+    std::getline(std::cin, m_input);
+
+    if(readInputNumber(m_input).has_value())
+        m_containerManager->setStrLenRand(readInputNumber(m_input).value());
+
+    m_containerManager->generateContainersRandom();
 }
 
 //------------------------------------------------------------------------------- 
@@ -160,20 +174,16 @@ void TerminalHandler::m_executeCommmands()
 
         std::getline(std::cin, m_input);
         
-        uint cmdId; // Прочитать номер команды
-        try
-        {
-            cmdId = readInputNumber(m_input).value();
-        }
-        catch(const std::exception& e)
-        {
-            std::cout << std::endl;
+        uint cmdId;
+        if(not readInputNumber(m_input).has_value()) // Прочитать номер команды
             continue;
-        }
+
+        cmdId = readInputNumber(m_input).value();
         
         switch(cmdId) // исполнить команду
         {
-        case E_EXIT: return;
+        case E_EXIT: 
+            return;
         
         case E_FIND_STRING:
             m_findString();
@@ -183,6 +193,10 @@ void TerminalHandler::m_executeCommmands()
             m_containerManager->showContents();
             continue;
         
+        case E_RAND_STRING:
+            m_randContainersContent();
+            continue;
+
         default: 
             std::cout << "invalid input";
             continue;

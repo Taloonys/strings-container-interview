@@ -42,6 +42,7 @@ private:
     void m_initCmdsMessageMenu();
     void m_executeCommmands();
     void m_findString();
+    void m_randContainersContent();
 
 private: 
     enum ContainerCmds
@@ -49,6 +50,7 @@ private:
         E_EXIT          = 0,
         E_FIND_STRING   = 1,
         E_SHOW_CONTENTS = 2,
+        E_RAND_STRING   = 3,
     };
 
     struct CmdOption {
@@ -59,6 +61,7 @@ private:
     const std::vector<CmdOption> m_cmdOptions {
         {E_EXIT, "exit"}, 
         {E_FIND_STRING, "find string"}, 
-        {E_SHOW_CONTENTS, "show contetnts"}
+        {E_SHOW_CONTENTS, "show contetnts"},
+        {E_RAND_STRING, "generate and fill containers randomly"}
     };
 };

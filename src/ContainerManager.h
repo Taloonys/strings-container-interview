@@ -52,6 +52,11 @@ public:
     */
     void fillContainers();
 
+    /**
+     * @brief generateContainersRandom - генерирует контейнеры случайным образом (но согласно параметрам M и N)
+    */
+    void generateContainersRandom();
+
     /** 
      * @brief showContents - вывод в stdout наполнения контейнеров
     */
@@ -61,6 +66,16 @@ public:
      * @brief findString - поиск строки по контейнерам 
     */
     std::optional<ContainerId> findString(const std::string& str) const; /// @todo try string_view
+
+    /**
+     * @brief setStrLenRand - устанавливает максимальную длину строки для рандомной генерации
+    */
+    void setStrLenRand(const uint str_len);
+
+    /**
+     * @brief getStrLendRand - возвращает установленную максимальную длину строки для рандомной генерации (по умолчанию = 20)
+    */
+    uint getStrLenRand() const;
 
 
 
@@ -74,4 +89,7 @@ private:
 
 private:
     void m_createContainers();
+
+private:
+    uint m_maxStrLenRand = 20; // допустимо разрешать выбирать максимальную длину строки
 };

@@ -51,3 +51,27 @@ void Container::showContents() const
         std::cout << str << std::endl;
     }
 }
+
+//---------------------------------------------------------------------- 
+
+std::string generateRandomString(const uint string_length)
+{
+    static std::string str =
+        "!@#$%^&*()-=+_)(*&^%$#@!"
+        "0123456789"
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    std::shuffle(str.begin(), str.end(), rng);
+
+    return str.substr(0, string_length-1);
+}
+
+//---------------------------------------------------------------------- 
+
+void Container::generateRandomStrings(const uint number_of_strings, const uint string_length)
+{
+    DEBUG("number of strings : " + number_of_strings)
+    for(int string_count = 0; string_count < number_of_strings; string_count++)
+        m_stringSet.insert(generateRandomString(string_length));                    
+}
