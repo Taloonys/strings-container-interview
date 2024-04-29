@@ -62,7 +62,16 @@ void TerminalHandler::m_execution()
 
         // Work with input
         std::getline(std::cin, input);
+        
+        // if weird input
         if(!TerminalRequisites::convertStrToUint(input).has_value())
+        {
+            std::cout << "Invalid option" << std::endl;
+            continue;
+        }
+
+        // if invalid chosen menu
+        if(TerminalRequisites::convertStrToUint(input).value() > m_cmdVec.size() - 1)
         {
             std::cout << "Invalid option" << std::endl;
             continue;

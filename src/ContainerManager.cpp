@@ -50,8 +50,18 @@ uint ContainerManager::getN() const
 
 //---------------------------------------------------------------------- 
 
+void ContainerManager::m_allowRespawn()
+{
+    if(not m_containers.empty())
+        m_containers.clear(); // for 2 step i allow to respawn containers
+}
+
+//---------------------------------------------------------------------- 
+
 void ContainerManager::fillContainers() // step 1
 {
+    m_allowRespawn();
+
     for (int i = 0; i < m_N; ++i) {
         int containerKey = i % m_M;
         m_containers[containerKey].insert("string " + std::to_string(i + 1));
@@ -105,8 +115,7 @@ std::optional<ContainerId> ContainerManager::findString(const std::string& str) 
 
 void ContainerManager::m_createContainers()
 {
-    if(not m_containers.empty())
-        m_containers.clear(); // for 2 step i allow to respawn containers
+    m_allowRespawn();
 
     for(ContainerId id = 0; id < m_M; id++)
     {

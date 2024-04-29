@@ -19,7 +19,6 @@
 
 //------------------------------ 
 
-typedef unsigned int uint;
 typedef unsigned int ContainerId;
 
 //------------------------------ 
@@ -89,6 +88,7 @@ private:
 
 private:
     void m_createContainers();
+    void m_allowRespawn();
 
 private:
     uint m_maxStrLenRand = 20; // допустимо разрешать выбирать максимальную длину строки
