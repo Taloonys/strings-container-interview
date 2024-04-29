@@ -33,7 +33,9 @@ void TerminalHandler::m_initCmdList()
 
 void TerminalHandler::m_showSetupVals()
 {
-    std::printf("Current M & N are : {%d & %d}\n", containerManager.getM(), containerManager.getN());
+    std::cout << "[Current Params]" << std::endl;
+    std::cout << "\t M = " << containerManager.getM() << std::endl;
+    std::cout << "\t N = " << containerManager.getN() << std::endl;
 }
 
 //---------------------------------------------------------------------- 
@@ -52,6 +54,8 @@ void TerminalHandler::m_execution()
 
     while(1)
     {
+        std::cout << std::endl;
+
         // Show cmd message and m/n info everytime
         m_showSetupVals();
         m_showCmdList(); /** @todo not optimized call*/

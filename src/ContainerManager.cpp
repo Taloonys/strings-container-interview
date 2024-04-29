@@ -50,19 +50,12 @@ uint ContainerManager::getN() const
 
 //---------------------------------------------------------------------- 
 
-void ContainerManager::fillContainers() // этап 1
+void ContainerManager::fillContainers() // step 1
 {
-    m_createContainers();
-    
-    uint strsPerContainer = (m_N / m_M);
-    for(auto& [id, container] : m_containers)
-    {
-        for(int i = 0; i < strsPerContainer; i++) // надеюсь, что в текущем случае не волнует О(n^2)
-        {
-            container.insert(("string" + std::to_string(i)) + "__" + std::to_string(counter++));    
-        }
+    for (int i = 0; i < m_N; ++i) {
+        int containerKey = i % m_M;
+        m_containers[containerKey].insert("string " + std::to_string(i + 1));
     }
-
 }
 
 //---------------------------------------------------------------------- 
@@ -72,6 +65,12 @@ void ContainerManager::showContents() const
     /**
      * @todo добавить перегрузку с методом на то, как отображать строки в табличном виде
     */
+    if(m_containers.empty())
+    {
+        std::cout << " ----- There are no containers generated -----" << std::endl;
+        return;
+    }
+
     for(const auto & [contId, container] : m_containers)
     {
         std::printf("----- Container № %d -----\n", contId);
@@ -109,7 +108,6 @@ void ContainerManager::m_createContainers()
     if(not m_containers.empty())
         m_containers.clear(); // for 2 step i allow to respawn containers
 
-    DEBUG("")
     for(ContainerId id = 0; id < m_M; id++)
     {
         Container container;
@@ -151,9 +149,6 @@ const std::vector<uint> randNumVec(const uint number_of_elements, const uint sum
 
     vec.push_back(summ - summ_down);
 
-    for(const auto val : vec)
-        std::cout << val << " " << std::endl;
-    
     return vec;
 }
 
