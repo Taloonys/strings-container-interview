@@ -4,6 +4,12 @@
 
 void ContainerManager::setM(const uint m)
 {
+    if(m == 0)
+    {
+        std::cout << "(Rules are: 0 < M < N) M could not be 0, returned M = " << m_M << std::endl;
+        return;
+    }
+
     m_M = m;
 }
 
@@ -11,6 +17,20 @@ void ContainerManager::setM(const uint m)
 
 void ContainerManager::setN(const uint n)
 {
+    if(n == 0)
+    {
+        std::cout << "(Rules are: 0 < M < N) N could not be 0, returned N = " << m_N << std::endl;
+        return;
+    }
+
+    /** @todo top 10 cringiest limitations treatments */
+    if(n < m_M)
+    {
+        std::cout << "(Rules are: 0 < M < N) N could not be less than M, setted up N = " << m_M + 1 << std::endl;
+        m_N = m_M + 1;
+        return;
+    }
+
     m_N = n;
 }
 
@@ -113,6 +133,9 @@ uint ContainerManager::getStrLenRand() const
 
 //---------------------------------------------------------------------- 
 
+/**
+ * @brief генерирует вектор случайных чисел заданной длины и сумма всех таких чисел равна заданной summ
+*/
 const std::vector<uint> randNumVec(const uint number_of_elements, const uint summ) 
 {
     std::vector<uint> vec; 
@@ -140,17 +163,13 @@ void ContainerManager::generateContainersRandom()
 {
     m_createContainers();
     
-    // srand(m_N);
-
     std::vector<uint> randNums(std::move(randNumVec(m_M, m_N)));
     uint num;
 
     for(auto& [contId, container] : m_containers)     
     {
         num = randNums.front();
-        DEBUG("vec front is " + std::to_string(randNums.front()))
         randNums.erase(randNums.begin());
-        DEBUG("num is " + std::to_string(num))
         container.generateRandomStrings(num, m_maxStrLenRand);
     }
 }

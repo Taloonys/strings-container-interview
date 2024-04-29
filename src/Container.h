@@ -14,13 +14,9 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
-#include <iostream>
-#include <random>
-#include <algorithm>
+#include "PreDefines.h"
 
-#define DEBUG(x) { std::cout << "[DEBUG] - " << __FUNCTION__ << " : " << x << std::endl; }
 
-static auto rng = std::default_random_engine {};
 
 //------------------------------ 
 

@@ -1,206 +1,69 @@
 #include <iostream>
-#include <optional>
-#include "TerminalHandler.h"
 
+#include "TerminalHandler.h"
 
 //------------------------------ 
 
-bool TerminalHandler::initContainerManager(ContainerManager* containerManager)
+TerminalHandler::TerminalHandler()
 {
-    m_containerManager = containerManager;   
-
-    srand(time(NULL));
-
-    if(m_containerManager == nullptr) // пока не уверен, кому можно владеть или кто будет создавать
-        return false; 
-
-    m_initContainerMessage();
-
-    return true;
+    srand(time(NULL)); // For primitive randomizer
 }
 
-//------------------------------------------------------------------------------- 
+//---------------------------------------------------------------------- 
 
-void TerminalHandler::m_initContainerMessage()
+void TerminalHandler::initContainerManager()
 {
-    std::printf("m_input contatiner number (M) and string number (N)\n"
-                "current values:\n"
-                "\tM = %d \n"
-                "\tN = %d \n",
-                m_containerManager->getM(),
-                m_containerManager->getN());
-
-   m_initContainerSetup(); 
+    m_initCmdList();    
+    m_execution();
 }
 
-//------------------------------------------------------------------------------- 
+//---------------------------------------------------------------------- 
 
-/**
- * @brief принимает строку и возвращает std::optional<uint>
-*/
-std::optional<uint> readInputNumber(const std::string& input) 
+void TerminalHandler::m_initCmdList()
 {
-        std::optional<uint> number;
-
-        try
-        {
-            if(std::stoi(input) < 0)
-            {
-                DEBUG("number is less than 0")
-                return number;
-            }
-
-            number = static_cast<uint>(std::stoi(input)); // вернёт значение
-        }
-        catch(const std::invalid_argument& e)
-        {
-            std::cout << "Is not a valid number" << std::endl;
-        }
-
-        // DEBUG("input read: " + number.value())
-        return number; // если вернёт nulltopt, то обработать внешне
+    m_cmdVec.push_back(std::make_unique<TerminalExitCmd>());
+    m_cmdVec.push_back(std::make_unique<TerminalSetValsCmd>());
+    m_cmdVec.push_back(std::make_unique<TerminalPrefillCmd>());
+    m_cmdVec.push_back(std::make_unique<TerminalFillRndCmd>());
+    m_cmdVec.push_back(std::make_unique<TerminalShowContentsCmd>());
+    m_cmdVec.push_back(std::make_unique<TerminalFindStrCmd>());
 }
 
-//------------------------------------------------------------------------------- 
+//---------------------------------------------------------------------- 
 
-bool TerminalHandler::m_trySetupValues()
+void TerminalHandler::m_showSetupVals()
 {
-    std::cout << "number of containers M = ";
-    std::getline(std::cin, m_input);
-    if(not readInputNumber(m_input).has_value()) 
-        return false;
-
-    const uint m = readInputNumber(m_input).value();
-
-    std::cout << "total number of strings N = ";
-    std::getline(std::cin, m_input);
-    if(not readInputNumber(m_input).has_value()) 
-        return false;
-
-    const uint n = readInputNumber(m_input).value();
-
-    // Необходимо сохранять именно пару
-    m_containerManager->setM(m);
-    m_containerManager->setN(n);
-
-    return true;
+    std::printf("Current M & N are : {%d & %d}\n", containerManager.getM(), containerManager.getN());
 }
 
-//------------------------------------------------------------------------------- 
+//---------------------------------------------------------------------- 
 
-void TerminalHandler::m_initContainerSetup()
+void TerminalHandler::m_showCmdList()
 {
+    for(int i = 0; i < m_cmdVec.size(); i++)
+        std::cout << i << " - " << m_cmdVec[i].get()->text() << std::endl;
+}
+
+//---------------------------------------------------------------------- 
+
+void TerminalHandler::m_execution()
+{
+    std::string input;
+
     while(1)
     {
-        std::cout << "Would you like to change M and N? (y/Y or n/N)";
-        std::getline(std::cin, m_input);
+        // Show cmd message and m/n info everytime
+        m_showSetupVals();
+        m_showCmdList(); /** @todo not optimized call*/
 
-        if(m_input == "Y" or m_input == "y") /// Даа, вложенность ... 
+        // Work with input
+        std::getline(std::cin, input);
+        if(!TerminalRequisites::convertStrToUint(input).has_value())
         {
-            // Считаю, что если вводим какие-то странные значения, то можно и изменить своё мнение
-            if(not m_trySetupValues()) continue;
-            
-            break;
-        }
-        
-        if(m_input == "N" or m_input == "n")
-            break;
-        
-        std::cout << "Wrong input" << std::endl;
-        continue; // нельзя выйти
-
-    }
-
-    m_containerManager->fillContainers();// go to fill containers from compile time data
-    std::cout << "-Containers are pre-filled-";
-
-    m_executeCommmands();
-}
-
-//------------------------------------------------------------------------------- 
-
-void TerminalHandler::m_findString()
-{
-    std::cout << "Input the string you want to find:\n";
-    std::getline(std::cin, m_input);
-
-    ContainerId id;
-    try
-    {
-        id = m_containerManager->findString(m_input).value();
-    }
-    catch(const std::bad_optional_access& e)
-    {
-        std::cout << "None of containers holds this string" << std::endl;
-        return;
-    }
-
-    std::cout << "This string is in container: " << id << std::endl;
-}
-
-//------------------------------------------------------------------------------- 
-
-void TerminalHandler::m_initCmdsMessageMenu()
-{
-    std::cout << std::endl 
-              << "[Available commands]" << std::endl;
-
-    for(const auto& cmd : m_cmdOptions)
-        std::cout << cmd.id << " - " << cmd.text << std::endl;
-}
-
-//------------------------------------------------------------------------------- 
-
-void TerminalHandler::m_randContainersContent()
-{
-    std::cout << "Current max length for random string is: " << m_containerManager->getStrLenRand() << std::endl
-              <<  "input correct value (>0) if you want to change it: " << std::endl;
-    std::getline(std::cin, m_input);
-
-    if(readInputNumber(m_input).has_value())
-        m_containerManager->setStrLenRand(readInputNumber(m_input).value());
-
-    m_containerManager->generateContainersRandom();
-}
-
-//------------------------------------------------------------------------------- 
-
-void TerminalHandler::m_executeCommmands()
-{
-    // Ожидаем команды
-    while(1)
-    {
-        m_initCmdsMessageMenu();
-
-        std::getline(std::cin, m_input);
-        
-        uint cmdId;
-        if(not readInputNumber(m_input).has_value()) // Прочитать номер команды
-            continue;
-
-        cmdId = readInputNumber(m_input).value();
-        
-        switch(cmdId) // исполнить команду
-        {
-        case E_EXIT: 
-            return;
-        
-        case E_FIND_STRING:
-            m_findString();
-            continue;
-
-        case E_SHOW_CONTENTS:
-            m_containerManager->showContents();
-            continue;
-        
-        case E_RAND_STRING:
-            m_randContainersContent();
-            continue;
-
-        default: 
-            std::cout << "invalid input";
+            std::cout << "Invalid option" << std::endl;
             continue;
         }
 
+        m_cmdVec[TerminalRequisites::convertStrToUint(input).value()].get()->exec(input, containerManager);
     }
 }

@@ -5,9 +5,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
     src/main.cpp
-    src/TerminalHandler.cpp
+    src/Container.cpp
     src/ContainerManager.cpp
-    src/Container.cpp)
+    src/TerminalHandler.cpp
+    src/TerminalSetValsCmd.cpp
+    src/TerminalFillRndCmd.cpp)
 
 add_executable(MyProject ${SOURCES})
 
