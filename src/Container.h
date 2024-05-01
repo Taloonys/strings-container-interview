@@ -48,7 +48,10 @@ public:
     */
     void generateRandomStrings(const uint number_of_strings, const uint string_length);
 
-
+    /** 
+     * @brief return number of strings
+    */
+    uint getSize() const;
 
 private:
     std::unordered_set<std::string> m_stringSet; // исходя из того, что строки уникальные + cамый быстрый поиск дефолтный поиск среди других структур

@@ -24,16 +24,12 @@ typedef unsigned int uint;
 
 //------------------------------ 
 
-/** 
- * @var 
- */
-
 namespace RandRequisites
 {
     static auto rng = std::default_random_engine {};
 
     static std::string chars_preset =
-        "!@#$%^&*()-=+_)(*&^%$#@!"
+        // "!@#$%^&*()-=+_)(*&^%$#@!"
         "0123456789"
         "abcdefghijklmnopqrstuvwxyz"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

@@ -6,7 +6,7 @@
 
 TerminalHandler::TerminalHandler()
 {
-    srand(time(NULL)); // For primitive randomizer
+    srand(time(0));
 }
 
 //---------------------------------------------------------------------- 

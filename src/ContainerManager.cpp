@@ -1,4 +1,5 @@
 #include "ContainerManager.h"
+#include <cassert>
 
 //------------------------------ 
 
@@ -141,22 +142,21 @@ uint ContainerManager::getStrLenRand() const
 //---------------------------------------------------------------------- 
 
 /**
- * @brief генерирует вектор случайных чисел заданной длины и сумма всех таких чисел равна заданной summ
+ * @brief генерирует константный вектор случайных чисел заданной длины и сумма всех таких чисел равна заданной summ
 */
-const std::vector<uint> randNumVec(const uint number_of_elements, const uint summ) 
+const std::vector<uint> randNumsVec(const uint m, const uint n)
 {
-    std::vector<uint> vec; 
+    std::vector<uint> vec;
+    vec.resize(m); // try to hold size of vector 
+    std::fill(vec.begin(), vec.end(), 0); // just in case
+    
+    for(int i = 0; i < n; i++)
+        vec[std::rand() % m]++; // +1 to random element until reach summ equal to n
 
-    uint summ_down = summ;
+    // std::shuffle(vec.begin(), vec.end(), RandRequisites::rng); // to make it full random
 
-    for(int i = 0; i < number_of_elements - 1; i++)
-    {
-        uint num = rand() % (summ - number_of_elements + 1) + 1;
-        vec.push_back(num);
-        summ_down -= num;
-    }
-
-    vec.push_back(summ - summ_down);
+    // for(const auto val : vec)
+    //     DEBUG(" vec - " + std::to_string(val))
 
     return vec;
 }
@@ -167,13 +167,15 @@ void ContainerManager::generateContainersRandom()
 {
     m_createContainers();
     
-    std::vector<uint> randNums(std::move(randNumVec(m_M, m_N)));
-    uint num;
+    std::vector<uint> randNums(randNumsVec(m_M, m_N));
+    uint vecIndex = 0;
+
+    assert(randNums.size() == m_M);
 
     for(auto& [contId, container] : m_containers)     
     {
-        num = randNums.front();
-        randNums.erase(randNums.begin());
-        container.generateRandomStrings(num, m_maxStrLenRand);
+        assert((vecIndex + 1) <= randNums.size());
+        container.generateRandomStrings(randNums[vecIndex++], m_maxStrLenRand);
+        // DEBUG("container " + std::to_string(contId) + " size : " + std::to_string(container.getSize()))
     }
 }
