@@ -14,12 +14,7 @@ class ICommandUnit
 public:
     virtual ~ICommandUnit() = default;
 
-    ICommandUnit(const ICommandUnit &) = default;
-    ICommandUnit &operator=(const ICommandUnit &) = default;
-
-    ICommandUnit(ICommandUnit &&) = delete;
-    ICommandUnit &operator=(ICommandUnit &&) = delete;
-
+public:
     /**
      * @brief Выводит текст, сопоставимый с назначением команды
     */
@@ -29,4 +24,11 @@ public:
      * @brief Производит исполнение команды
     */
     virtual     void exec(const std::string userInput, ContainerManager& containerManager) const = 0;
+
+protected:
+      ICommandUnit() = default;
+      ICommandUnit(const ICommandUnit & ) = default;
+      ICommandUnit & operator = (const ICommandUnit & ) = default;
+      ICommandUnit(ICommandUnit && ) noexcept = default;
+      ICommandUnit & operator = (ICommandUnit && ) noexcept = default;
 };
